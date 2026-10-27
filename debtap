@@ -3251,10 +3251,8 @@ fi
 # Removing metadata of original .deb package
 rm -rf control preinst postinst prerm postrm conffiles
 
-# Removing temporary namcap/namtap artifacts so they are never packaged
-rm -f -- namcap-checks namcap-dependencies namcap-libraries \
-    namtap-checks namtap-dependencies namtap-libraries \
-    *librariesfound
+# Removing temporary namcap files so they are never packaged
+rm -f -- namcap-checks namcap-dependencies namcap-libraries
 
 # Generating .MTREE file
 echo -e "\n${lightgreen}==>${NC} ${bold}Generating .MTREE file...${normal}"
