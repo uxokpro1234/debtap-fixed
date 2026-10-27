@@ -13,7 +13,7 @@ Run `debtap --help` for the available options.
 ## Changes
 
 - **Cache-check fix:** replaced the malformed `ls | grep` wildcard check with a direct check for `/var/cache/pkgfile/core.files` and `/var/cache/pkgfile/extra.files`. The old pattern escaped `*`, so it could be treated as a literal character and fail to detect cache files.
-- **Optional C++ port:** `main.cpp` is provided as an alternative implementation for maintainers who may find it useful or prefer not to spend time doing the port themselves.
+- **Optional C++ port since you don't have time:** `main.cpp` is provided as an alternative implementation for maintainers who may find it useful or prefer not to spend time doing the port themselves.
 
 The C++ port is experimental and is not yet feature-complete; the original `-u` database-update workflow and full automatic package-name database translation are not implemented. Build it on Linux/Arch Linux with:
 
