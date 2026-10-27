@@ -11,23 +11,19 @@ debtap -o output_directory [other_options] package_filename
 Run `debtap --help` for the available options.
 
 ## Changes
-<img src ="debtap-fix.png">
 
-- **Cache-check fix:** replaced the malformed `ls | grep` wildcard check with a direct check for `/var/cache/pkgfile/core.files` and `/var/cache/pkgfile/extra.files`. The old pattern escaped `*`, so it could be treated as a literal character and fail to detect cache files.
-- **Optional C++ port since you don't have time:** `main.cpp` is provided as an alternative implementation for maintainers who may find it useful or prefer not to spend time doing the port themselves.
-The C++ port is experimental and is not yet feature-complete; the original `-u` database-update workflow and full automatic package-name database translation are not implemented. Build it on Linux/Arch Linux with:
+![Cache-check fix](debtap-fix.png)
 
-### Fix temporary files ending up in packages (#110)
+- **Cache-check fix:** Replaced the malformed `ls | grep` cache lookup with explicit checks for `/var/cache/pkgfile/core.files` and `/var/cache/pkgfile/extra.files`.
+- **Fix for #110:** Added cleanup for the temporary `namcap-checks`, `namcap-dependencies`, and `namcap-libraries` files before generating `.MTREE` and the final package archive, preventing leftover analysis files from being included in generated packages.
 
-Remove the temporary `namcap-*` analysis files before generating `.MTREE` and the final package archive. This prevents leftover analysis files from being accidentally included in converted packages when the dependency-processing branch is skipped.
+## Testing
 
-Testing:
-- `bash -n debtap`
-- `git diff --check`
-- Tested conversion of a package without `Depends` or `Pre-Depends`, and checked the generated archive for leftover temporary files.
+Check the Bash syntax and patch formatting:
 
 ```bash
-g++ -std=c++17 -O2 -Wall -Wextra -pedantic main.cpp -o debtap-cpp
+bash -n debtap
+git diff --check
 ```
 
-Required tools can be installed on Arch Linux with `sudo pacman -S --needed base-devel libarchive tar zstd`.
+Also test conversion of a `.deb` package without `Depends` or `Pre-Depends`, then inspect the generated archive to verify that the temporary files are not included.
